@@ -6,10 +6,11 @@
     <title>Jurnal Tilawah Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Firebase SDKs (Compat Version) -->
+    
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
@@ -49,7 +50,6 @@
 
     <div class="max-w-md mx-auto min-h-screen relative shadow-2xl bg-[#FCFAF7]">
         
-        <!-- HEADER -->
         <header id="appHeader" class="pt-8 pb-4 px-6 flex justify-between items-start">
             <div>
                 <h1 class="text-2xl font-bold text-[#2D2D2D]">Assalamu’alaikum</h1>
@@ -60,7 +60,6 @@
             </button>
         </header>
 
-        <!-- VIEW: BERANDA -->
         <main id="view-home" class="view-section active pb-32">
             <div class="px-6 mt-4">
                 <div class="bg-[#2D5A27] rounded-3xl p-6 text-white relative overflow-hidden shadow-xl shadow-green-900/10">
@@ -89,7 +88,6 @@
             </div>
         </main>
 
-        <!-- VIEW: PROGRES -->
         <main id="view-progress" class="view-section pb-32">
             <div class="p-6">
                 <h2 class="text-xl font-bold">Perjalanan Anda</h2>
@@ -109,18 +107,15 @@
             </div>
         </main>
 
-        <!-- VIEW: BADGES -->
         <main id="view-badges" class="view-section pb-32">
             <div class="p-6 text-center">
                 <h2 class="text-xl font-bold">Lencana Pencapaian</h2>
                 <p class="text-sm text-gray-500">Kumpulkan apresiasi dari tilawahmu</p>
             </div>
             <div id="badgeGrid" class="px-6 grid grid-cols-2 gap-4">
-                <!-- Badges dynamically rendered -->
-            </div>
+                </div>
         </main>
 
-        <!-- VIEW: INPUT -->
         <main id="view-input" class="view-section pb-32">
             <div class="p-6 flex items-center gap-4">
                 <button onclick="changeView('home')" class="p-2 text-gray-400"><i data-lucide="chevron-left"></i></button>
@@ -155,9 +150,7 @@
             </div>
         </main>
 
-        <!-- VIEW: GURU (PENGELOLA) -->
         <main id="view-teacher" class="view-section pb-32">
-            <!-- Login Admin Overlay -->
             <div id="adminLoginSection" class="p-8 text-center flex flex-col items-center justify-center min-h-[60vh]">
                 <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                     <i data-lucide="lock" class="text-gray-400"></i>
@@ -168,7 +161,6 @@
                 <button onclick="verifyAdmin()" class="mt-4 w-full max-w-[200px] py-3 bg-[#2D5A27] text-white font-bold rounded-xl shadow-md">Masuk</button>
             </div>
 
-            <!-- Admin Content -->
             <div id="adminContent" class="hidden">
                 <div class="p-6 flex justify-between items-end">
                     <div>
@@ -185,7 +177,6 @@
             </div>
         </main>
 
-        <!-- NAVIGATION -->
         <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-100 px-6 py-4 flex justify-between items-center z-50">
             <button onclick="changeView('home')" id="nav-home" class="flex flex-col items-center nav-active">
                 <i data-lucide="book-open" class="w-5 h-5"></i>
@@ -210,7 +201,6 @@
             </button>
         </nav>
 
-        <!-- IDENTITY MODAL (Login/Update Profile) -->
         <div id="modalProfile" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/50 backdrop-blur-md p-6">
             <div class="bg-white rounded-3xl p-8 shadow-2xl w-full max-w-xs scale-95 opacity-0 transition-all duration-300" id="modalProfileContent">
                 <div class="text-4xl mb-4 text-center">👤</div>
@@ -226,7 +216,6 @@
             </div>
         </div>
 
-        <!-- SUCCESS MODAL -->
         <div id="modalSuccess" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/40 backdrop-blur-sm p-6">
             <div class="bg-white rounded-3xl p-8 text-center shadow-2xl w-full max-w-xs scale-90 opacity-0 transition-all duration-300" id="modalContent">
                 <div class="text-5xl mb-4">🌿</div>
@@ -236,7 +225,6 @@
             </div>
         </div>
 
-        <!-- DELETE CONFIRMATION -->
         <div id="modalDelete" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/40 backdrop-blur-sm p-6">
             <div class="bg-white rounded-3xl p-8 text-center shadow-2xl w-full max-w-xs">
                 <h3 class="text-xl font-bold text-gray-900">Hapus Catatan?</h3>
@@ -252,11 +240,29 @@
     <script>
         const surahs = ["Al-Fatihah","Al-Baqarah","Ali 'Imran","An-Nisa'","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Taubah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra'","Al-Kahf","Maryam","Taha","Al-Anbiya'","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Asy-Syu'ara'","An-Naml","Al-Qasas","Al-'Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba'","Fatir","Yasin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Asy-Syura","Az-Zukhruf","Ad-Dukhan","Al-Jasiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Az-Zariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'ah","Al-Hadid","Al-Mujadilah","Al-Hasyr","Al-Mumtahanah","As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddassir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba'","An-Nazi'at","'Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Insyiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghasyiyah","Al-Fajr","Al-Balad","Asy-Syams","Al-Lail","Ad-Duha","Asy-Syarh","At-Tin","Al-'Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-'Adiyat","Al-Qari'ah","At-Takasur","Al-'Asr","Al-Humazah","Al-Fil","Quraisy","Al-Ma'un","Al-Kausar","Al-Kafirun","An-Nasr","Al-Lahab","Al-Ikhlas","Al-Falaq","An-Nas"];
 
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "", projectId: "demo" };
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'quran-monitor-app';
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        // --- KONFIGURASI FIREBASE (DARI ANDA) ---
+        // Kami menggunakan format compat agar kompatibel dengan script CDN di atas
+        const firebaseConfig = {
+          apiKey: "AIzaSyDDyY4ky1ajDpH2BmBr8nvGp5C9Ea43Ie4",
+          authDomain: "jurnaltilawah.firebaseapp.com",
+          projectId: "jurnaltilawah",
+          storageBucket: "jurnaltilawah.firebasestorage.app",
+          messagingSenderId: "912208643532",
+          appId: "1:912208643532:web:4da4ac19620266b887c969",
+          measurementId: "G-JSN5D452DJ"
+        };
 
-        firebase.initializeApp(firebaseConfig);
+        const appId = 'jurnaltilawah'; // Menggunakan projectId sebagai ID aplikasi internal
+        const initialAuthToken = null;
+
+        // Initialize Firebase (Compat Syntax)
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        // Initialize Services
+        const app = firebase.app();
+        const analytics = firebase.analytics(); // Analytics sudah aktif
         const db = firebase.firestore();
         const auth = firebase.auth();
         
@@ -269,8 +275,8 @@
         // --- AUTH FLOW ---
         const startApp = async () => {
             try {
-                if (initialAuthToken) await auth.signInWithCustomToken(initialAuthToken);
-                else await auth.signInAnonymously();
+                // Gunakan Anonymous Login agar user bisa langsung pakai
+                await auth.signInAnonymously();
 
                 auth.onAuthStateChanged(user => {
                     currentUser = user;
@@ -285,6 +291,9 @@
                 });
             } catch (e) { console.error("Auth Fail:", e); }
         };
+
+        // Memulai Aplikasi
+        startApp();
 
         // --- ADMIN VERIFICATION ---
         function verifyAdmin() {
@@ -383,6 +392,25 @@
             }
             document.getElementById('appHeader').style.display = (viewId === 'home') ? 'flex' : 'none';
             if(viewId === 'badges' || viewId === 'teacher') lucide.createIcons();
+        }
+
+        function showModal() {
+            const m = document.getElementById('modalSuccess');
+            const c = document.getElementById('modalContent');
+            m.classList.remove('hidden');
+            setTimeout(() => c.classList.remove('scale-90', 'opacity-0'), 10);
+        }
+
+        function closeModal() {
+            const m = document.getElementById('modalSuccess');
+            const c = document.getElementById('modalContent');
+            c.classList.add('scale-90', 'opacity-0');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('modalDelete').classList.add('hidden');
+            deleteTargetId = null;
         }
 
         // --- BADGE LOGIC ---
@@ -585,55 +613,28 @@
             }
             container.innerHTML = logs.slice(0, 5).map(log => {
                 const date = log.manualTimestamp ? new Date(log.manualTimestamp) : (log.timestamp?.toDate() || new Date());
-                const dateString = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+                const dateString = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
                 return `
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2">
-                            <p class="font-bold text-gray-800">Surah ${log.surah}</p>
-                            <span class="text-[10px] bg-gray-50 px-2 py-0.5 rounded text-gray-500">Ayat ${log.start}-${log.end}</span>
+                <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex justify-between items-center">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-[#FCFAF7] p-3 rounded-full text-[#2D5A27]">
+                            <i data-lucide="book-open" class="w-5 h-5"></i>
                         </div>
-                        <p class="text-[10px] text-gray-400 mt-1">${dateString}</p>
+                        <div>
+                            <h4 class="font-bold text-gray-800">${log.surah}</h4>
+                            <p class="text-xs text-gray-400">Ayat ${log.start}-${log.end} • ${dateString}</p>
+                        </div>
                     </div>
-                    <button onclick="openDeleteModal('${log.id}')" class="p-2 text-gray-300">
-                        <i data-lucide="trash-2" class="w-4 h-4"></i>
-                    </button>
                 </div>`;
             }).join('');
             lucide.createIcons();
         }
 
         function renderProgress(logs) {
-            if(document.getElementById('totalSessions')) document.getElementById('totalSessions').innerText = logs.length;
-            if(document.getElementById('totalMinutes')) document.getElementById('totalMinutes').innerText = logs.length * 15;
+            document.getElementById('totalSessions').innerText = logs.length;
+            // Asumsi 1 sesi = 15 menit (sesuai kode handleSave)
+            document.getElementById('totalMinutes').innerText = logs.length * 15;
         }
-
-        function openDeleteModal(id) {
-            deleteTargetId = id;
-            document.getElementById('modalDelete').classList.remove('hidden');
-            document.getElementById('confirmDeleteBtn').onclick = deleteLog;
-        }
-        function closeDeleteModal() { document.getElementById('modalDelete').classList.add('hidden'); }
-        async function deleteLog() {
-            if (!currentUser || !deleteTargetId) return;
-            await db.collection(`artifacts/${appId}/users/${currentUser.uid}/tilawah_logs`).doc(deleteTargetId).delete();
-            closeDeleteModal();
-        }
-
-        function showModal() {
-            const m = document.getElementById('modalSuccess');
-            const c = document.getElementById('modalContent');
-            m.classList.remove('hidden');
-            setTimeout(() => c.classList.remove('scale-90', 'opacity-0'), 10);
-        }
-        function closeModal() {
-            const m = document.getElementById('modalSuccess');
-            const c = document.getElementById('modalContent');
-            c.classList.add('scale-90', 'opacity-0');
-            setTimeout(() => { m.classList.add('hidden'); changeView('home'); }, 300);
-        }
-
-        startApp();
     </script>
 </body>
 </html>
